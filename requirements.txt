@@ -1,25 +1,17 @@
-# requirements.txt — multi_agent_nav_max (JAX 0.4.35 Ecosystem Pinned)
-#
-# Ecosystem compatibility:
-#   JAX:               0.4.35
-#   jaxlib:            0.4.35
-#   Chex:              0.1.88
-#   Flax:              0.10.2
-#   Optax:             0.2.4
-#   Orbax-Checkpoint:  0.6.4
-#   NumPy:             < 2.0.0 (prevents C-ABI mismatch with JAX 0.4.35)
+# requirements.txt — multi_agent_nav_max (ROCm MI300X Stable)
 
 # ── Core JAX Stack ────────────────────────────────────────────────────────────
-jax==0.4.35
-jaxlib==0.4.35
+jax==0.5.0
+jaxlib==0.5.0
+jax-rocm60-pjrt==0.5.0
 chex==0.1.88
 
-# ── Flax / Optax / Orbax Neural Network Ecosystem ─────────────────────────────
+# ── Flax / Optax / Orbax ──────────────────────────────────────────────────────
 flax==0.10.2
 optax==0.2.4
 orbax-checkpoint==0.6.4
 
-# ── Scientific / Data Stack ───────────────────────────────────────────────────
+# ── Scientific Stack ──────────────────────────────────────────────────────────
 numpy==1.26.4
 pandas==2.2.3
 matplotlib==3.8.4
@@ -30,3 +22,7 @@ rich==13.7.1
 tqdm==4.66.4
 imageio==2.34.1
 cloudpickle==3.0.0
+
+wandb
+tensorboard
+dm-tree
