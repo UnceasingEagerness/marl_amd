@@ -37,6 +37,18 @@ def get_mass_matrix(params: USVParams) -> jnp.ndarray:
     return M
 
 @jax.jit
+def get_mass_matrix_inv(params: USVParams) -> jnp.ndarray:
+    m11 = params.m - params.X_u_dot
+    m22 = params.m - params.Y_v_dot
+    m33 = params.Iz - params.N_r_dot
+    M_inv = jnp.array([
+        [1.0 / m11, 0.0, 0.0],
+        [0.0, 1.0 / m22, 0.0],
+        [0.0, 0.0, 1.0 / m33]
+    ])
+    return M_inv
+
+@jax.jit
 def get_derivatives(state: USVState, tau: jnp.ndarray, params: USVParams, M_inv: jnp.ndarray, u_current: jnp.ndarray = jnp.zeros(3)) -> tuple:
     u, v, r = state.nu[0], state.nu[1], state.nu[2]
     psi = state.eta[2]
@@ -93,7 +105,7 @@ def rk4_step(state: USVState, tau: jnp.ndarray, params: USVParams, u_current: jn
     Step the dynamics forward in time using Runge-Kutta 4th Order (RK4).
     Fully compiled by XLA for execution on the GPU/TPU.
     """
-    M_inv = jnp.linalg.inv(get_mass_matrix(params))
+    M_inv = get_mass_matrix_inv(params)
     
     eta_dot1, nu_dot1 = get_derivatives(state, tau, params, M_inv, u_current)
     
