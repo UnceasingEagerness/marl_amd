@@ -17,9 +17,22 @@
 module load python/3.11
 module load rocm/6.2.4
 
-# Initialize conda for non-interactive SLURM shell
-eval "$(conda shell.bash hook)"
+# Initialize conda using the exact absolute path on your cluster
+source /apps/software/anaconda3/etc/profile.d/conda.sh
 conda activate marl_rocm
+
+# Sanity Check for Python Environment
+echo "Python: $(which python)"
+
+python - <<EOF
+import sys
+import pandas
+import jax
+print("Python Executable:", sys.executable)
+print("Pandas Version:", pandas.__version__)
+print("JAX Version:", jax.__version__)
+print("Default Backend:", jax.default_backend())
+EOF
 
 # ROCm Path configurations
 export ROCM_PATH=/opt/rocm
@@ -29,13 +42,13 @@ export HIP_DEVICE_LIB_PATH=/opt/rocm/lib/llvm/lib/clang/18/lib/amdgcn/bitcode
 export DEVICE_LIB_PATH=/opt/rocm/lib/llvm/lib/clang/18/lib/amdgcn/bitcode
 export PATH=$LLVM_PATH/bin:$PATH
 
-# Optional: JAX-specific XLA tuning for AMD
+# Crucial JAX-specific XLA tuning for AMD ROCm stability
 export XLA_PYTHON_CLIENT_PREALLOCATE=false
 export XLA_PYTHON_CLIENT_MEM_FRACTION=0.90
 
 # Ensure logs directory exists for SLURM stdout/stderr
 mkdir -p logs
 
-# Run the training script (using train_film.py for Variant 5)
-cd ~/Marl/final_marl
+# Run the training script (using absolute path as requested)
+cd /mnt/data/rajinim/Marl/final_marl
 python train_film.py
