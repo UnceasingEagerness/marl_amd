@@ -5,6 +5,7 @@ Updated for Multi-GPU (8x MI300X) Data Parallelism using jax.pmap.
 
 import os
 import time
+import functools
 import jax
 import jax.numpy as jnp
 import optax
@@ -289,10 +290,11 @@ def main():
     steps_per_epoch = 2_000
     num_epochs      = total_timesteps // steps_per_epoch
 
-    with console.status(f"[bold cyan]Compiling XLA Graph for Variant 5 across {num_devices} GPUs...[/bold cyan]", spinner="dots"):
-        @jax.pmap(axis_name='devices')
-        def run_epoch(runner_state):
-            return jax.lax.scan(_step_fn, runner_state, None, length=steps_per_epoch)
+    console.print(f"[bold cyan]Compiling XLA Graph for Variant 5 across {num_devices} GPUs...[/bold cyan]")
+
+    @functools.partial(jax.pmap, axis_name='devices')
+    def run_epoch(runner_state):
+        return jax.lax.scan(_step_fn, runner_state, None, length=steps_per_epoch)
 
     # ── Training loop ─────────────────────────────────────────────────────────
     os.makedirs("logs_film",         exist_ok=True)
