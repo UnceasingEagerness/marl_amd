@@ -11,7 +11,7 @@
 #SBATCH --mem=32GB
 
 # Single MI300X GPU is plenty for JAX compilation and CTDE training
-#SBATCH --gres=gpu:1
+#SBATCH --gres=gpu:8
 
 # Load server modules
 module load python/3.11

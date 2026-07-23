@@ -43,6 +43,7 @@ def update_critic(critic_state: TrainState, target_critic_params: Any, actor_sta
         return loss
 
     loss, grads = jax.value_and_grad(critic_loss_fn)(critic_state.params)
+    grads = jax.lax.pmean(grads, axis_name='devices')
     new_critic_state = critic_state.apply_gradients(grads=grads)
     return new_critic_state, loss
 
@@ -63,6 +64,7 @@ def update_actor(actor_state: TrainState, critic_state: TrainState, log_alpha: j
         return loss, log_prob
 
     (loss, log_prob), grads = jax.value_and_grad(actor_loss_fn, has_aux=True)(actor_state.params)
+    grads = jax.lax.pmean(grads, axis_name='devices')
     new_actor_state = actor_state.apply_gradients(grads=grads)
     return new_actor_state, loss, log_prob
 
@@ -75,6 +77,7 @@ def update_alpha(log_alpha: jnp.ndarray, opt_state: Any, log_prob: jnp.ndarray, 
         return loss
         
     loss, grads = jax.value_and_grad(alpha_loss_fn)(log_alpha)
+    grads = jax.lax.pmean(grads, axis_name='devices')
     updates, new_opt_state = optimizer.update(grads, opt_state, log_alpha)
     new_log_alpha = optax.apply_updates(log_alpha, updates)
     return new_log_alpha, new_opt_state, loss
