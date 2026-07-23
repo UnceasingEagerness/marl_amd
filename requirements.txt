@@ -1,45 +1,32 @@
-# requirements.txt — multi_agent_nav_max (USV MARL Swarm Navigation)
-# Pinned to exact versions running on the training machine.
+# requirements.txt — multi_agent_nav_max (JAX 0.4.35 Ecosystem Pinned)
 #
-# ── CPU Install ───────────────────────────────────────────────────────────────
-#   pip install -r requirements.txt
-#
-# ── GPU: CUDA 12 ──────────────────────────────────────────────────────────────
-#   pip install "jax[cuda12]" "jaxlib[cuda12]"
-#   pip install -r requirements.txt --ignore-requires-python
-#
-# ── GPU: AMD ROCm (MI300X / MI250X) ─────────────────────────────────────────
-#   Run the provided setup script (handles version resolution automatically):
-#     bash setup_rocm.sh
-#
-#   Or manually:
-#     pip install jax==0.10.2 jaxlib==0.10.2+rocm<VER> \
-#         --extra-index-url https://pypi.amd.com
-#     pip install -r requirements.txt
-#
-#   Required env vars (set in ~/.bashrc_rocm or per-run):
-#     JAX_PLATFORMS=rocm
-#     ROCR_VISIBLE_DEVICES=0           # or comma-separated for multi-GPU
-#     HSA_OVERRIDE_GFX_VERSION=gfx942  # MI300X; gfx90a for MI250X
-#     XLA_PYTHON_CLIENT_MEM_FRACTION=0.90
-#
-# NOTE: holoocean (used in holoocean_inference.py) requires a separate
-#       Unreal Engine build and is NOT installable via pip. See:
-#       https://holoocean.readthedocs.io
+# Ecosystem compatibility:
+#   JAX:               0.4.35
+#   jaxlib:            0.4.35
+#   Chex:              0.1.88
+#   Flax:              0.10.2
+#   Optax:             0.2.4
+#   Orbax-Checkpoint:  0.6.4
+#   NumPy:             < 2.0.0 (prevents C-ABI mismatch with JAX 0.4.35)
 
 # ── Core JAX Stack ────────────────────────────────────────────────────────────
-jax==0.10.2
-jaxlib==0.10.2
+jax==0.4.35
+jaxlib==0.4.35
+chex==0.1.88
 
-# ── Flax / Optax / Orbax (JAX Neural Network Ecosystem) ──────────────────────
-flax==0.12.7
-optax==0.2.8
-orbax-checkpoint==0.11.5
+# ── Flax / Optax / Orbax Neural Network Ecosystem ─────────────────────────────
+flax==0.10.2
+optax==0.2.4
+orbax-checkpoint==0.6.4
 
-# ── Scientific / Data ─────────────────────────────────────────────────────────
-numpy==2.4.4
-pandas==3.0.2
-matplotlib==3.10.8
+# ── Scientific / Data Stack ───────────────────────────────────────────────────
+numpy==1.26.4
+pandas==2.2.3
+matplotlib==3.8.4
 
-# ── Logging / CLI ─────────────────────────────────────────────────────────────
-rich==13.2.0
+# ── Environment & Utilities ───────────────────────────────────────────────────
+gymnasium==0.29.1
+rich==13.7.1
+tqdm==4.66.4
+imageio==2.34.1
+cloudpickle==3.0.0

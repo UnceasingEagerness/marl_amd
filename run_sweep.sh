@@ -32,7 +32,7 @@ fi
 
 echo ""
 echo "╔══════════════════════════════════════════════════════════╗"
-echo "║   final_marl — Parallel Sweep (${#GPU_LIST[@]} GPU(s))     ║"
+echo "║   multi_agent_nav_max — Parallel Sweep (${#GPU_LIST[@]} GPU(s))     ║"
 echo "╚══════════════════════════════════════════════════════════╝"
 echo ""
 

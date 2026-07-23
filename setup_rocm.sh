@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # =============================================================================
 #  setup_rocm.sh  —  AMD MI300X Environment Setup
-#  Project: final_marl  (pure JAX/Flax SAC)
+#  Project: multi_agent_nav_max  (pure JAX/Flax SAC)
 #
 #  Run once on the server:
 #    bash setup_rocm.sh
@@ -32,7 +32,7 @@ GPU_ARCH="gfx942"   # AMD MI300X
 
 echo ""
 echo -e "${BOLD}╔══════════════════════════════════════════════════════════════╗${NC}"
-echo -e "${BOLD}║  final_marl  ·  AMD MI300X  ·  ROCm ${ROCM_VER}         ║${NC}"
+echo -e "${BOLD}║  multi_agent_nav_max  ·  AMD MI300X  ·  ROCm ${ROCM_VER}         ║${NC}"
 echo -e "${BOLD}╚══════════════════════════════════════════════════════════════╝${NC}"
 echo ""
 info "ROCm path    : ${ROCM_PATH}"
@@ -240,7 +240,7 @@ echo -e "  ${BOLD}To activate the environment:${NC}"
 echo "    conda activate marl"
 echo ""
 echo -e "  ${BOLD}To train (single GPU — default):${NC}"
-echo "    cd ~/AUV_Project/RLSim/final_marl"
+echo "    cd ~/AUV_Project/RLSim/multi_agent_nav_max"
 echo "    ROCR_VISIBLE_DEVICES=0 python train_pure_jax.py"
 echo ""
 echo -e "  ${BOLD}To train on a specific GPU:${NC}"
