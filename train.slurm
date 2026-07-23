@@ -17,8 +17,8 @@
 module load python/3.11
 module load rocm/6.2.4
 
-# Activate environment
-source ~/.bashrc
+# Initialize conda for non-interactive SLURM shell
+eval "$(conda shell.bash hook)"
 conda activate marl_rocm
 
 # ROCm Path configurations
