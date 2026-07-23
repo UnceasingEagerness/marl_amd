@@ -293,7 +293,7 @@ class TemporalActorBackbone(nn.Module):
         spatial_seq = VmappedSpatial(layout=self.layout)(x_seq) # [B, seq_len, 128]
         
         # Temporal Memory (LSTM)
-        LSTM = nn.RNN(nn.OptimizedLSTMCell(features=128), return_carry=True)
+        LSTM = nn.RNN(nn.OptimizedLSTMCell(features=128, kernel_init=nn.initializers.lecun_normal(), recurrent_kernel_init=nn.initializers.lecun_normal()), return_carry=True)
         (lstm_carry, lstm_hidden), lstm_out = LSTM(spatial_seq)
         
         out = nn.Dense(256)(lstm_hidden)
@@ -358,7 +358,7 @@ class FlaxSpatioTemporalAttentionEncoder(nn.Module):
         # 1. Ego Temporal Encoding (Query)
         ego_emb = nn.Dense(self.embed_dim)(ego_seq)
         ego_emb = nn.relu(ego_emb)
-        LSTM_ego = nn.RNN(nn.OptimizedLSTMCell(self.hidden_dim), return_carry=True)
+        LSTM_ego = nn.RNN(nn.OptimizedLSTMCell(self.hidden_dim, kernel_init=nn.initializers.lecun_normal(), recurrent_kernel_init=nn.initializers.lecun_normal()), return_carry=True)
         (ego_carry, ego_hidden), _ = LSTM_ego(ego_emb)
         ego_q = jnp.expand_dims(ego_hidden, axis=1) # [B, 1, hidden_dim] -> Query Q
         
@@ -369,7 +369,7 @@ class FlaxSpatioTemporalAttentionEncoder(nn.Module):
         
         entity_emb = nn.Dense(self.embed_dim)(entity_feat)
         entity_emb = nn.relu(entity_emb)
-        LSTM_shared = nn.RNN(nn.OptimizedLSTMCell(self.hidden_dim), return_carry=True)
+        LSTM_shared = nn.RNN(nn.OptimizedLSTMCell(self.hidden_dim, kernel_init=nn.initializers.lecun_normal(), recurrent_kernel_init=nn.initializers.lecun_normal()), return_carry=True)
         (ent_carry, ent_hidden), _ = LSTM_shared(entity_emb)
         ent_kv = ent_hidden.reshape((B, num_entities, self.hidden_dim)) # [B, num_entities, hidden_dim] -> Keys K / Values V
         
